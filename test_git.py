@@ -1,1 +1,1 @@
-print(dudos)
+print(type(5))
