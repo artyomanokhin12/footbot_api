@@ -6,7 +6,7 @@ from sqlalchemy.engine import URL
 
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from config.config import Config, load_config
-from handlers import action_handlers, fav_team_handlers 
+from handlers import action_handlers, fav_team_handlers
 from other_functions.show_next_match_fav_team import sheduled_match
 from database.database import user_base
 from database import BaseModel, create_async_engine, get_session_maker, proceed_schemas
