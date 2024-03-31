@@ -11,3 +11,4 @@ schemas/__pycache__/
 state/__pycache__/
 config/__pycache__/
 .env
+__pycache__/
