@@ -12,7 +12,7 @@ from keyboard.inline_buttons_fav_team import create_fav_team_keyboard
 from config.config import Config, load_config
 from aiogram.types import ReplyKeyboardRemove
 
-from database.engine import test_insert
+from database.requests import test_insert
 
 router = Router()
 config: Config = load_config()

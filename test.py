@@ -1,4 +1,17 @@
-import sys
-from os.path import dirname, abspath
+from aiogram import Router
+from aiogram.filters import Command
+from aiogram.types import Message
 
-print(sys.path.insert(0, dirname(dirname(dirname(abspath(__file__))))))
+from database.requests import count_rows
+
+router = Router()
+
+
+@router.message(Command(commands=['count']))
+async def command_count(message: Message):
+    result = await count_rows()
+    print("here")
+    print(result)
+    await message.answer(
+        text=f"result"
+    )

@@ -8,6 +8,7 @@ from config.config import Config, load_config
 from handlers import action_handlers, fav_team_handlers, for_test
 from other_functions.show_next_match_fav_team import sheduled_match
 from database.database import user_base
+from test import router as test_router
 
 config: Config = load_config()
 
@@ -28,6 +29,7 @@ async def main():
     dp.include_router(fav_team_handlers.router)
     dp.include_router(action_handlers.router)
     dp.include_router(for_test.router)
+    dp.include_router(test_router)
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

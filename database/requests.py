@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select
+from sqlalchemy import func, insert, select
 
 from database.user import User
 from database.database import async_session_maker
@@ -18,4 +18,10 @@ async def test_insert(**data: SUser):
         query = insert(User).values(**data)
         await session.execute(query)
         await session.commit()
-        
+
+
+async def count_rows():
+    async with async_session_maker() as session:
+        query = select(User.__table__.columns).count(User.user_id) 
+        result = await select.execute(query)
+        return result
