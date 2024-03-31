@@ -4,8 +4,10 @@ database/base.py
 handlers/for_test.py
 database/__pycache__/
 handlers/__pycache__/
-keyboards/__pycache__/
+keyboard/__pycache__/
 migrations/
 other_functions/__pycache__/
 schemas/__pycache__/
 state/__pycache__/
+config/__pycache__/
+.env

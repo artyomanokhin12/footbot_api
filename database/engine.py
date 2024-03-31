@@ -1,17 +1,21 @@
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
-from sqlalchemy.engine import URL
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.asyncio import create_async_engine as _create_async_engine
+from sqlalchemy import insert, select
 
+from database.user import User
+from database.database import async_session_maker
+from schemas.schemas import SUser
 
-def create_async_engine(url: URL | str) -> AsyncEngine:
-    return _create_async_engine(url=url, echo=True, pool_pre_ping=True)
+async def test_request(user_id):
+    async with async_session_maker() as session:
+        print(user_id)
+        query = select(User.__table__.columns).filter_by(user_id=user_id)
+        result = await session.execute(query)
+        print("we are here")
+        return result.scalar_one_or_none()
+    
 
-
-async def proceed_schemas(engine: AsyncEngine, metadata) -> None:
-    async with engine.begin() as conn:
-        await conn.run_sync(metadata.create_all)
-
-
-def get_session_maker(engine: AsyncEngine) -> sessionmaker:
-    return sessionmaker(engine, class_=AsyncSession)
+async def test_insert(**data: SUser):
+    async with async_session_maker() as session:
+        query = insert(User).values(**data)
+        await session.execute(query)
+        await session.commit()
+        

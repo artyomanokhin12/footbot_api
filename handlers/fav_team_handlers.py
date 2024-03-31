@@ -12,6 +12,8 @@ from keyboard.inline_buttons_fav_team import create_fav_team_keyboard
 from config.config import Config, load_config
 from aiogram.types import ReplyKeyboardRemove
 
+from database.engine import test_insert
+
 router = Router()
 config: Config = load_config()
 api_token = config.api_token.token
@@ -61,8 +63,11 @@ async def warning_fav_league(message: Message):
 @router.callback_query(StateFilter(FSMTeamChoice.team), lambda query: query.data in set(teams_dict.keys()))
 async def process_finale(callback: CallbackQuery, state: FSMContext):
     await state.update_data(team=callback.data)
-    user_base[callback.from_user.id] = await state.get_data()
-    user_base[callback.from_user.id]['team_id'] = teams_dict[callback.data]
+    user_base = await state.get_data()
+    user_base['user_id'] = callback.from_user.id
+    user_base['team_id'] = teams_dict[callback.data]
+    await test_insert(**user_base)
+
     await callback.message.answer(
         text='Отлично! Теперь я могу напоминать тебе о матчах твоей любимой команды!',
         reply_markup=ReplyKeyboardRemove()

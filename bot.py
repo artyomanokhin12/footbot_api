@@ -2,18 +2,16 @@ import asyncio
 import logging
 from datetime import datetime
 from aiogram import Bot, Dispatcher
-from sqlalchemy.engine import URL
 
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from config.config import Config, load_config
-from handlers import action_handlers, fav_team_handlers
+from handlers import action_handlers, fav_team_handlers, for_test
 from other_functions.show_next_match_fav_team import sheduled_match
 from database.database import user_base
-from database import BaseModel, create_async_engine, get_session_maker, proceed_schemas
 
 config: Config = load_config()
 
-redis = Redis(host='localhost')
+redis = Redis(host='127.0.0.1')
 
 storage = RedisStorage(redis=redis)
 
@@ -27,21 +25,9 @@ async def main():
 
     logging.basicConfig(level=logging.DEBUG)
 
-    dp.include_router(fav_team_handlers.router) 
+    dp.include_router(fav_team_handlers.router)
     dp.include_router(action_handlers.router)
-
-    postgres_sql = URL.create(
-        'postgresql+asyncpg',
-        database='aiogram',
-        username='postgres',
-        port=5432,
-        host='localhost',
-        password='postgres'
-    )
-
-    async_engine = create_async_engine(postgres_sql)
-    session_maker = get_session_maker(async_engine)
-    await proceed_schemas(async_engine, BaseModel.metadata)
+    dp.include_router(for_test.router)
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
@@ -71,4 +57,7 @@ async def sstart():
     await task2
 
 if __name__ == "__main__":
-    asyncio.run(sstart())
+    try:
+        asyncio.run(sstart())
+    except (KeyboardInterrupt, SystemExit):
+        print("Бот был остановлен")
