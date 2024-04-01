@@ -1,5 +1,19 @@
 from dataclasses import dataclass
+# from multiprocessing import pool
 from environs import Env
+# from arq.connections import RedisSettings
+
+
+# @dataclass
+# class RedisConfig:
+#     db: int = 1
+#     host: str = 'redis'
+#     port: int = 6379
+#     password: str = None
+#     username: str = None
+#     state_ttl: int = None
+#     data_ttl: int = None
+#     pool_settings = RedisSettings(host=host, port=port, password=password, database=db, username=username)
 
 
 @dataclass
