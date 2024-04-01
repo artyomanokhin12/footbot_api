@@ -12,4 +12,4 @@ state/__pycache__/
 config/__pycache__/
 .env
 __pycache__/
-.alembic.ini
+alembic.ini
