@@ -6,7 +6,7 @@ from aiogram.fsm.storage.redis import RedisStorage, Redis
 from arq import create_pool
 from config.config import Config, load_config # , RedisConfig
 from handlers import action_handlers, fav_team_handlers, for_test
-from test import router as test_router
+from test import router as test_router, pool_settins
 from other_functions.weekly_notifications import weekly_notification
 
 config: Config = load_config()
@@ -25,7 +25,7 @@ async def main():
 
     logging.basicConfig(level=logging.DEBUG)
 
-    # redis_pool = await create_pool(RedisConfig.pool_settings)
+    redis_pool = await create_pool(pool_settins)
 
     dp.include_router(fav_team_handlers.router)
     dp.include_router(action_handlers.router)
@@ -35,7 +35,7 @@ async def main():
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(
         bot,
-        # arqredis=redis_pool
+        arqredis=redis_pool
         )
 
 

@@ -1,19 +1,18 @@
 from dataclasses import dataclass
-# from multiprocessing import pool
+from typing import Any
 from environs import Env
-# from arq.connections import RedisSettings
+from arq.connections import RedisSettings
 
 
-# @dataclass
-# class RedisConfig:
-#     db: int = 1
-#     host: str = 'redis'
-#     port: int = 6379
-#     password: str = None
-#     username: str = None
-#     state_ttl: int = None
-#     data_ttl: int = None
-#     pool_settings = RedisSettings(host=host, port=port, password=password, database=db, username=username)
+@dataclass
+class RedisConfig:
+    db: int
+    host: str
+    port: int
+    password: str
+    username: str
+    state_ttl: int
+    data_ttl: int
 
 
 @dataclass
@@ -41,6 +40,7 @@ class Config:
     tg_bot: TgBot
     api_token: ApiToken
     database: Database
+    redis_config: RedisConfig
 
 
 def load_config(path: str | None = None) -> Config:
@@ -60,5 +60,14 @@ def load_config(path: str | None = None) -> Config:
             port=env('port'),
             host=env('host'),
             password=env('password')
+        ),
+        redis_config=RedisConfig(
+            db= 1,
+            host='127.0.0.1',
+            port= 6379,
+            username=None,
+            password= None,
+            state_ttl=None,
+            data_ttl=None
         )
     )
