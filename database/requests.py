@@ -22,6 +22,13 @@ async def test_insert(**data: SUser):
 
 async def count_rows():
     async with async_session_maker() as session:
-        query = select(User.__table__.columns).count(User.user_id) 
-        result = await select.execute(query)
-        return result
+        query = select(func.count()).select_from(User)
+        length = await session.scalar(query)
+        return length
+    
+
+async def list_users():
+    async with async_session_maker() as session:
+        query = select(User).with_only_columns(User.user_id, User.team_id)
+        result = await session.execute(query)
+        return result.fetchall()

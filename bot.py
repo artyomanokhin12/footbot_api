@@ -9,6 +9,7 @@ from handlers import action_handlers, fav_team_handlers, for_test
 from other_functions.show_next_match_fav_team import sheduled_match
 from database.database import user_base
 from test import router as test_router
+from other_functions.weekly_notifications import weekly_notification
 
 config: Config = load_config()
 
@@ -35,25 +36,10 @@ async def main():
     await dp.start_polling(bot)
 
 
-async def weekly_notification():
-    while True:
-        await asyncio.sleep(60)
-        cur_date = datetime.isoweekday(datetime.now())
-
-        if cur_date == 6 and user_base:
-            for user_id in user_base.items():
-                next_match, matchday = sheduled_match(
-                    user_base[user_id]['team_id'],
-                    api_token=config.api_token.token)
-                await bot.send_message(user_id,
-                                       f'Следующий матч: {next_match},'
-                                       f'дата матча: {matchday}')
-
-
 async def sstart():
 
     task1 = asyncio.create_task(main())
-    task2 = asyncio.create_task(weekly_notification())
+    task2 = asyncio.create_task(weekly_notification(bot=bot))
 
     await task1
     await task2
