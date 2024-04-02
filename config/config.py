@@ -9,10 +9,10 @@ class RedisConfig:
     db: int
     host: str
     port: int
-    password: str
-    username: str
-    state_ttl: int
-    data_ttl: int
+    password: str | None
+    username: str | None
+    state_ttl: int | None
+    data_ttl: int | None
 
 
 @dataclass
