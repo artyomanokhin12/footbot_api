@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from config.config import Config, load_config
-from handlers import action_handlers, fav_team_handlers, for_test
+from handlers import action_handlers, fav_team_handlers, for_test, cancel_command
 from test import router as test_router
 
 
@@ -24,6 +24,7 @@ async def main():
     
     dp['api_token'] = config.api_token.token
     
+    dp.include_router(cancel_command.router)
     dp.include_router(fav_team_handlers.router)
     dp.include_router(action_handlers.router)
     dp.include_router(for_test.router)

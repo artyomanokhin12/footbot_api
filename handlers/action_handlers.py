@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import Message, ReplyKeyboardRemove
-from aiogram.filters import CommandStart, Command, StateFilter
+from aiogram.filters import CommandStart, StateFilter
 from keyboard.normal_buttons import start_kb, second_kb
 from aiogram.fsm.state import default_state
 from aiogram.fsm.context import FSMContext
@@ -34,22 +34,6 @@ async def process_start_command(message: Message, state: FSMContext):
         reply_markup=start_kb()
     )
     await state.set_state(FSMLeague.action)
-
-
-@router.message(Command(commands='cancel'), StateFilter(default_state))
-async def process_cancel_command(message: Message):
-    await message.answer(
-        text='Ты вне состояния выбора. Тут нечего отменять'
-    )
-
-
-@router.message(Command(commands='cancel'), ~StateFilter(default_state))
-async def process_cancel_command_state(message: Message, state: FSMContext):
-    await message.answer(
-        text='Вы только что вышли из выбора действия. '
-             'Чтобы еще раз начать действие, введите команду /start'
-    )
-    await state.clear()
 
 
 @router.message(StateFilter(FSMLeague.action), F.text.in_(action_dict))

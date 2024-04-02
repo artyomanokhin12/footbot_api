@@ -4,7 +4,6 @@ from aiogram.filters import Command, StateFilter
 from aiogram.fsm.state import default_state
 from aiogram.fsm.context import FSMContext
 
-from database.database import user_base
 from keyboard.normal_buttons import second_kb
 from state.state import FSMTeamChoice
 from other_functions.check_team_id import check_team_id

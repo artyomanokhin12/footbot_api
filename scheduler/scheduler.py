@@ -47,7 +47,6 @@ class WorkerSettings:
     on_shutdown = shutdown
     functions = [future_match_notification, ]
     cron_jobs = [
-        cron('scheduler.scheduler.future_match_notification', second=0)
-        # cron('scheduler.scheduler.future_match_notification', hour=13, minute=0)
+        cron('scheduler.scheduler.future_match_notification', hour=13, minute=0)
     ]
     
