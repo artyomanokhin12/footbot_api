@@ -47,6 +47,10 @@ async def process_choice_fav_team(message: Message, state: FSMContext):
     global teams_dict
     teams_dict = check_team_id(league_choice[league['league']], api_token=api_token)
     await message.answer(
+        text="Убираем клавиатуру",
+        reply_markup=ReplyKeyboardRemove()
+    )
+    await message.answer(
         text='Пожалуйста, выберите команду',
         reply_markup=create_fav_team_keyboard(*teams_dict.keys())
     )
