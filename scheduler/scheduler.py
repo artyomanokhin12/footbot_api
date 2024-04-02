@@ -35,7 +35,10 @@ async def future_match_notification(ctx):
         for user in list_user:
             true_user = user[0]
             next_match, matchday_msk = sheduled_match(user[1], _token)
-            await bot.send_message(true_user, f"Следующий матч: {next_match}. {matchday_msk}")
+            if matchday_msk:
+                await bot.send_message(true_user, f"Следующий матч: {next_match}. {matchday_msk}")
+            else:
+                await bot.send_message(392039047, 'Сегодня матчей нет')
 
 
 class WorkerSettings:
@@ -44,6 +47,7 @@ class WorkerSettings:
     on_shutdown = shutdown
     functions = [future_match_notification, ]
     cron_jobs = [
-        cron('scheduler.scheduler.future_match_notification', hour=13, minute=0)
+        cron('scheduler.scheduler.future_match_notification', second=0)
+        # cron('scheduler.scheduler.future_match_notification', hour=13, minute=0)
     ]
     

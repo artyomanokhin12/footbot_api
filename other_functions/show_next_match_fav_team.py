@@ -8,6 +8,6 @@ def sheduled_match(team_id: str, api_token: str):
     url = f'https://api.football-data.org/v4/teams/{team_id}/matches?status=SCHEDULED'
     ans = requests.get(url=url, headers=headers).json()
     matchday = ans['matches'][0]['utcDate']
-    matchday_msk = timezone_change(matchday)
+    matchday_msk = timezone_change(matchday, fav_team=True)
     next_match = ans['matches'][0]['homeTeam']['name'] + " " + ans['matches'][0]['awayTeam']['name']
     return next_match, matchday_msk
