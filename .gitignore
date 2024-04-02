@@ -13,3 +13,4 @@ config/__pycache__/
 .env
 __pycache__/
 alembic.ini
+test_func.py

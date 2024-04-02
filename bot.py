@@ -12,17 +12,17 @@ async def main():
 
     logging.basicConfig(level=logging.DEBUG)
     
-    bot = Bot(config.tg_bot.token)
-    
-    dp['api_token'] = config.api_token.token
-
     config: Config = load_config()
 
+    bot = Bot(config.tg_bot.token)
+    
     redis = Redis(host='127.0.0.1')
 
     storage = RedisStorage(redis=redis)
 
     dp = Dispatcher(storage=storage)
+    
+    dp['api_token'] = config.api_token.token
     
     dp.include_router(fav_team_handlers.router)
     dp.include_router(action_handlers.router)

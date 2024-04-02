@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime, date, timedelta
-from typing import Awaitable
+
+from other_functions.my_timezone import timezone_change
 
 
 def schedule(league: str, api_token: str):
@@ -11,18 +12,17 @@ def schedule(league: str, api_token: str):
     headers = {"X-Auth-Token": api_token}
 
     today = date.today()
-    monday = today - timedelta(datetime.weekday(today))
-    sunday = today + timedelta(6-datetime.weekday(today))
 
     params = {'dateFrom': today, 'dateTo': today}
 
     ans = requests.get(url, headers=headers, params=params).json()
 
     for match in ans['matches']:
-        matches += f"{match['homeTeam']['name']} - {match['awayTeam']['name']} ({match['utcDate']})"
+        matchday = match['utcDate']
+        matchday_msk = timezone_change(matchday)
+        matches += f"{match['homeTeam']['name']} - {match['awayTeam']['name']}. {matchday_msk}\n"
 
-    if matches != '':
+    if matches:
         return matches
     else:
-        matches = 'Сегодня нет матчей'
-        return matches
+        return 'Сегодня нет матчей'
