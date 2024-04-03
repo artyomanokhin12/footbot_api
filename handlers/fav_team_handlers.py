@@ -9,7 +9,7 @@ from other_functions.check_team_id import check_team_id
 from keyboard.inline_buttons_fav_team import create_fav_team_keyboard, normal_functions_buttons
 from config.config import Config, load_config
 
-from database.requests import favorite_team_insert
+from database.requests import favorite_team_insert, check_user
 
 router = Router()
 config: Config = load_config()
@@ -21,13 +21,18 @@ league_list = ['PL', 'PD', 'SA']
 
 @router.message(Command(commands=['my_team']), StateFilter(default_state))
 async def my_team_command(message: Message, state: FSMContext) -> None:
-    await message.answer(
-        text='Пожалуйста, выбери лигу, в которой находится твоя '
-        'любимая команда.',
-        reply_markup=normal_functions_buttons()
-    )
-    await state.set_state(FSMTeamChoice.league)
-
+    if not check_user(message.from_user.id):
+        await message.answer(
+            text='Пожалуйста, выбери лигу, в которой находится твоя '
+            'любимая команда.',
+            reply_markup=normal_functions_buttons()
+        )
+        await state.set_state(FSMTeamChoice.league)
+    else:
+        await message.answer(
+            text='У вас уже выбрана любимая команда.\nЕсли хотите выбрать другую, '
+            'введите команду /change или выберите ее в меню.'
+        )
 
 @router.message(Command(commands=['my_team']), ~StateFilter(default_state))
 async def my_team_command_in_state(message: Message) -> None:

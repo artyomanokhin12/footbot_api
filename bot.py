@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 
 from aiogram.fsm.storage.redis import RedisStorage, Redis
 from config.config import Config, load_config
-from handlers import action_handlers, fav_team_handlers, for_test, cancel_command, start_command
+from handlers import action_handlers, fav_team_handlers, for_test, cancel_command, start_command, empty_handler
 from test import router as test_router
 from keyboard.main_menu import set_main_menu
 
@@ -31,6 +31,7 @@ async def main():
     dp.include_router(action_handlers.router)
     dp.include_router(for_test.router)
     dp.include_router(test_router)
+    dp.include_router(empty_handler.router)
 
     await set_main_menu(bot)
     await bot.delete_webhook(drop_pending_updates=True)
