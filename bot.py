@@ -6,6 +6,7 @@ from aiogram.fsm.storage.redis import RedisStorage, Redis
 from config.config import Config, load_config
 from handlers import action_handlers, fav_team_handlers, for_test, cancel_command, start_command
 from test import router as test_router
+from keyboard.main_menu import set_main_menu
 
 
 async def main():    
@@ -21,7 +22,7 @@ async def main():
     storage = RedisStorage(redis=redis)
 
     dp = Dispatcher(storage=storage)
-    
+
     dp['api_token'] = config.api_token.token
     
     dp.include_router(start_command.router)
@@ -31,6 +32,7 @@ async def main():
     dp.include_router(for_test.router)
     dp.include_router(test_router)
 
+    await set_main_menu(bot)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 

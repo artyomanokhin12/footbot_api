@@ -13,7 +13,7 @@ async def test_request(user_id):
         return result.scalar_one_or_none()
     
 
-async def test_insert(**data: SUser):
+async def favorite_team_insert(**data: SUser):
     async with async_session_maker() as session:
         query = insert(User).values(**data)
         await session.execute(query)

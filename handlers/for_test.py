@@ -2,8 +2,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from database.requests import test_request, test_insert
-from database.database import async_session_maker
+from database.requests import test_request
 
 router = Router()
 
