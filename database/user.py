@@ -10,6 +10,7 @@ class User(Base):
     league = Column(String, unique=False, nullable=False)
     team = Column(String, unique=False, nullable=False)
     team_id = Column(Integer, unique=False, nullable=False)
+    blocked = Column(Boolean, unique=False, nullable=False)
     match_notification = Column(Boolean, unique=False, nullable=True)
     date_next_match = Column(Date, unique=False, nullable=True)
 

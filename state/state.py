@@ -8,5 +8,6 @@ class FSMLeague(StatesGroup):
 
 class FSMTeamChoice(StatesGroup):
     league = State()
+    current_teams = State()
     teams_in_league = State()  # находится ли команда в лиге
     team = State()
