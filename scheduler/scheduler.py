@@ -1,11 +1,15 @@
 from aiogram import Bot
+from aiogram.exceptions import AiogramError, TelegramAPIError, TelegramForbiddenError
+from aiogram.methods import TelegramMethod
+from aiogram.filters.chat_member_updated import ChatMemberUpdatedFilter, KICKED
+from aiogram.types import ChatMemberUpdated, Message
 
 from config.config import load_config
 
 from arq import cron
 from arq.connections import RedisSettings
 
-from database.requests import list_users
+from database.requests import list_users, block_user
 from other_functions.show_next_match_fav_team import sheduled_match
 
 config = load_config()
@@ -26,19 +30,23 @@ async def startup(ctx):
 async def shutdown(ctx):
     await ctx['bot'].session.close()
 
-
 async def future_match_notification(ctx):
     _token = config.api_token.token
     bot: Bot = ctx['bot']
-    for _ in range(1):
-        list_user = await list_users()
-        for user in list_user:
+    list_user = await list_users()
+    for user in list_user:
+        print(user)
+        if not user[2]:
             true_user = user[0]
             next_match, matchday_msk = sheduled_match(user[1], _token)
-            if matchday_msk:
-                await bot.send_message(true_user, f"Следующий матч: {next_match}. {matchday_msk}")
-            else:
-                await bot.send_message(392039047, 'Сегодня матчей нет')
+            try:
+                if matchday_msk:
+                    await bot.send_message(true_user, f"Следующий матч: next_match. matchday_msk")
+                else:
+                    await bot.send_message(true_user, 'Сегодня матчей нет')
+            except TelegramForbiddenError:
+                await block_user(true_user)
+                print('Бот был заблокирован')
 
 
 class WorkerSettings:
@@ -47,6 +55,6 @@ class WorkerSettings:
     on_shutdown = shutdown
     functions = [future_match_notification, ]
     cron_jobs = [
-        cron('scheduler.scheduler.future_match_notification', hour=13, minute=0)
+        cron('scheduler.scheduler.future_match_notification', second={0, 15, 30, 45}) #hour=13, minute=0)
     ]
     

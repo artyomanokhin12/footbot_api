@@ -1,4 +1,4 @@
-from sqlalchemy import func, insert, select
+from sqlalchemy import Update, func, insert, select, update
 
 from database.user import User
 from database.database import async_session_maker
@@ -31,6 +31,20 @@ async def count_rows():
 
 async def list_users():
     async with async_session_maker() as session:
-        query = select(User).with_only_columns(User.user_id, User.team_id)
+        query = select(User).with_only_columns(User.user_id, User.team_id, User.blocked)
         result = await session.execute(query)
         return result.fetchall()
+    
+
+async def unblock_user(user_id):
+    async with async_session_maker() as session:
+        query = insert(User).values(blocked=False)
+        await session.execute(query)
+        await session.commit()
+
+
+async def block_user(user_id):
+    async with async_session_maker() as session:
+        query = update(User).where(user_id=user_id).values(blocked=True)
+        await session.execute(query)
+        await session.commit()

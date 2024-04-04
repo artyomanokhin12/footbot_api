@@ -21,7 +21,7 @@ league_list = ['PL', 'PD', 'SA']
 
 @router.message(Command(commands=['my_team']), StateFilter(default_state))
 async def my_team_command(message: Message, state: FSMContext) -> None:
-    if not check_user(message.from_user.id):
+    if not await check_user(message.from_user.id):
         await message.answer(
             text='Пожалуйста, выбери лигу, в которой находится твоя '
             'любимая команда.',

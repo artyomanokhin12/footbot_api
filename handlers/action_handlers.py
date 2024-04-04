@@ -20,12 +20,6 @@ action_dict = {
     'top_scorers': top_scorers
 }
 
-# league_dict: dict[str, str] = {
-#     'premier league': 'PL',
-#     'la liga': 'PD',
-#     'serie a': 'SA'
-# }
-
 league_list = ['PL', 'PD', 'SA']
 
 
