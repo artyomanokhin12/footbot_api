@@ -10,7 +10,7 @@ def standing(league, api_token):
     len_res = len(result["standings"][0]["table"])
     standing = ''
     for i in range(len_res):
-        standing += (f"{1 + i}" + " " + result["standings"][0]["table"][i]["team"]["name"]
-                     + "\n")
+        standing += (f"{1 + i}) {result["standings"][0]["table"][i]["team"]["name"]} - {result["standings"][0]["table"][i]["points"]} очков "
+        f"за {result["standings"][0]["table"][i]["playedGames"]} игр\n")
     return standing
 

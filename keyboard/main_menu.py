@@ -2,7 +2,7 @@ from aiogram import Bot
 from aiogram.types import BotCommand
 
 commands: dict[str, str] = {
-    '/standings': 'Текущая турнирная таблица',
+    '/standing': 'Текущая турнирная таблица',
     '/schedule': 'Расписание матчей на сегодня',
     '/top_scorers': 'Список лучших бомбардиров чемпионата',
     '/my_team': 'Выбор любимой команды, информация о которой будет приходить в уведомлениях',
