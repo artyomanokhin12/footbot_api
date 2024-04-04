@@ -4,7 +4,7 @@ from database.user import User
 from database.database import async_session_maker
 from schemas.schemas import SUser
 
-async def check_user(user_id):
+async def check_user(user_id: int):
     """
     Проверка, есть ли пользователь в БД
     """
@@ -36,15 +36,8 @@ async def list_users():
         return result.fetchall()
     
 
-async def unblock_user(user_id):
+async def block_user(user_id: int, new_status: bool):
     async with async_session_maker() as session:
-        query = insert(User).values(blocked=False)
-        await session.execute(query)
-        await session.commit()
-
-
-async def block_user(user_id):
-    async with async_session_maker() as session:
-        query = update(User).where(user_id=user_id).values(blocked=True)
-        await session.execute(query)
+        query = await session.get(User, user_id)
+        query.blocked = new_status
         await session.commit()

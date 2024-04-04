@@ -41,12 +41,13 @@ async def future_match_notification(ctx):
             next_match, matchday_msk = sheduled_match(user[1], _token)
             try:
                 if matchday_msk:
-                    await bot.send_message(true_user, f"Следующий матч: next_match. matchday_msk")
+                    await bot.send_message(true_user, f"Следующий матч: {next_match}. {matchday_msk}")
                 else:
                     await bot.send_message(true_user, 'Сегодня матчей нет')
             except TelegramForbiddenError:
-                await block_user(true_user)
-                print('Бот был заблокирован')
+                await block_user(true_user, True)
+        else:
+            print('Пользователь заблокировал бота')
 
 
 class WorkerSettings:
@@ -55,6 +56,6 @@ class WorkerSettings:
     on_shutdown = shutdown
     functions = [future_match_notification, ]
     cron_jobs = [
-        cron('scheduler.scheduler.future_match_notification', second={0, 15, 30, 45}) #hour=13, minute=0)
+        cron('scheduler.scheduler.future_match_notification', second=0) #hour=13, minute=0)
     ]
     

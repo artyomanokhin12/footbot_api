@@ -2,6 +2,8 @@ from aiogram import Router
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 
+from database.requests import block_user, check_user
+
 router = Router()
 
 
@@ -14,6 +16,9 @@ async def start_command(message: Message):
         "Все команды доступны в меню. Если хочешь, можешь ввести команду /help или выбрать ее в меню, "
         "чтобы узнать о возможностях бота более подробно."
     )
+    status = await check_user(message.from_user.id)
+    if status:
+        await block_user(message.from_user.id, False)
 
 
 @router.message(Command(commands=['help']))
