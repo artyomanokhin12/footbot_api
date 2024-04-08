@@ -14,3 +14,5 @@ config/__pycache__/
 __pycache__/
 alembic.ini
 test_func.py
+other_functions/second_test_func.py
+other_functions/test.py
